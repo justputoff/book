@@ -17,7 +17,7 @@
         @foreach($books as $book)
         <div class="col-md-4 mb-3">
             <div class="card h-100">
-                <img src="{{ Storage::url($book->cover_image) }}" class="card-img-top" alt="{{ $book->title }}">
+                <img src="{{ Storage::url($book->cover_image) }}" class="card-img-top" alt="{{ $book->title }}" style="height: 300px; object-fit: cover;">
                 <div class="card-body">
                     <h5 class="card-title">{{ $book->title }}</h5>
                     <p class="card-text">Author: {{ $book->author }}</p>
