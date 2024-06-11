@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\LandingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/books/{book}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::patch('/books/{book}/update-status', [BookController::class, 'updateStatus'])->name('books.updateStatus');
+    Route::get('/books/list', [BookController::class, 'list'])->name('books.list');
 });
 
+Route::get('/landing', [LandingController::class, 'index'])->name('landing');
+
 require __DIR__.'/auth.php';
+

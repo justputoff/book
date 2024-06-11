@@ -131,4 +131,11 @@ class BookController extends Controller
 
         return redirect()->route('books.index')->with('success', 'Book status updated successfully.');
     }
+
+    // Menampilkan daftar buku
+    public function list()
+    {
+        $books = Book::all();
+        return view('pages.books.list', compact('books'));
+    }
 }

@@ -90,6 +90,13 @@
                   <div data-i18n="Books">Books</div>
                 </a>
               </li>
+              <!-- Book List -->
+              <li class="menu-item">
+                <a href="{{ route('books.list') }}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                  <div data-i18n="Book List">Book List</div>
+                </a>
+              </li>
             </ul>
           </aside>
           <!-- / Menu -->
