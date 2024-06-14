@@ -47,17 +47,22 @@
             color: #ff6347;
         }
         .dino {
-            border-radius: 25%;
             position: relative;
-            width: 150px;
-            height: 150px;
-            background-image: url('https://i.imgur.com/6b7N4k7.png');
+            /* width: 350px;
+            height: 350px; */
             background-size: cover;
-            animation: walk 5s linear infinite;
+            z-index: 10;
+            pointer-events: none; /* Added this */
         }
         @keyframes walk {
             0% { left: 0; }
             100% { left: 100%; }
+        }
+        .dino a {
+            animation: walk 10s linear infinite;
+            z-index: 20;
+            position: relative;
+            pointer-events: auto; /* Added this to enable click on link */
         }
     </style>
 </head>
@@ -136,7 +141,9 @@
             </a>
         </div>
 
-        <div class="dino mt-5 bg-dark text-light p-5">Klik saya</div>
+        <div class="dino mt-5 p-2 border-bottom border-top w-100">
+            <a href="{{ route('books.create') }}" target="_blank" class="btn btn-sm btn-primary">Upload Buku</a>
+        </div>
 
         <h1 class="text-center mb-4 mt-5 text-custom">Our Books</h1>
         <div class="row">
