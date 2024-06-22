@@ -10,6 +10,8 @@ class Book extends Model
     use HasFactory;
 
     protected $fillable = [
+        'packages_id',
+        'payment_proof',
         'title',
         'author',
         'isbn',
@@ -23,5 +25,10 @@ class Book extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function packages()
+    {
+        return $this->belongsTo(Package::class);
     }
 }

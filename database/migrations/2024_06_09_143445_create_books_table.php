@@ -21,6 +21,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->integer('page');
+            $table->foreignId('packages_id')->constrained()->onDelete('cascade'); // Added foreign key packages_id
+            $table->string('payment_proof')->nullable(); // Added payment_proof column and made it nullable
             $table->timestamps();
         });
     }

@@ -22,6 +22,8 @@
             <th class="text-white">Page</th>
             <th class="text-white">User</th>
             <th class="text-white">PDF</th>
+            <th class="text-white">Package</th>
+            <th class="text-white">Payment Proof</th>
             <th class="text-white">Status</th>
             <th class="text-white">Actions</th>
           </tr>
@@ -37,6 +39,14 @@
             <td>{{ $book->page }}</td>
             <td>{{ $book->user->name }}</td>
             <td><a href="{{ Storage::url($book->pdf) }}" target="_blank">Download PDF</a></td>
+            <td>{{ $book->packages->name }}</td>
+            <td>
+              @if ($book->payment_proof)
+                <a href="{{ Storage::url($book->payment_proof) }}" target="_blank"> View Image</a>
+              @else
+                No Payment Proof
+              @endif
+            </td>
             <td>{{ $book->status }}</td>
             <td>
               <div class="d-flex flex-wrap">

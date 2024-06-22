@@ -39,6 +39,21 @@
             <a href="{{ Storage::url($book->pdf) }}" target="_blank" class="d-block mt-2">Current PDF</a>
           @endif
         </div>
+        <div class="mb-3">
+          <label for="packages_id" class="form-label">Package</label>
+          <select class="form-control" id="packages_id" name="packages_id" required>
+            @foreach($packages as $package)
+              <option value="{{ $package->id }}" {{ $book->packages_id == $package->id ? 'selected' : '' }}>{{ $package->name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="payment_proof" class="form-label">Payment Proof</label>
+          <input type="file" class="form-control" id="payment_proof" name="payment_proof">
+          @if ($book->payment_proof)
+            <img src="{{ Storage::url($book->payment_proof) }}" alt="Payment Proof" width="100" class="mt-2">
+          @endif
+        </div>
         <button type="submit" class="btn btn-primary">Update</button>
       </form>
     </div>

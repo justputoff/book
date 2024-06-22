@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         Artisan::call('migrate:fresh');
         $this->call([
             UserSeeder::class,
+            PackageSeeder::class,
         ]);
     }
 }

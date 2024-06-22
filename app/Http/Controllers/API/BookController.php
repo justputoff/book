@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\Package; // Import model Package
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +16,7 @@ class BookController extends Controller
     // Menampilkan daftar buku
     public function index()
     {
-        $books = Book::with('user')->get();
+        $books = Book::with('user', 'package')->get(); // Memuat relasi package
         return response()->json([
             'data' => $books,
             'message' => 'success',
@@ -35,10 +36,13 @@ class BookController extends Controller
                 'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'page' => 'required|integer',
                 'pdf' => 'required|mimes:pdf|max:10000',
+                'packages_id' => 'required|exists:packages,id', // Validasi packages_id
+                'payment_proof' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi payment_proof
             ]);
 
             $coverImagePath = $request->file('cover_image')->store('cover_images', 'public');
             $pdfPath = $request->file('pdf')->store('pdfs', 'public');
+            $paymentProofPath = $request->file('payment_proof') ? $request->file('payment_proof')->store('payment_proofs', 'public') : null;
 
             $book = Book::create([
                 'title' => $request->title,
@@ -49,6 +53,8 @@ class BookController extends Controller
                 'pdf' => $pdfPath,
                 'user_id' => Auth::id(),
                 'status' => 'pending', // Atur status default sesuai kebutuhan
+                'packages_id' => $request->packages_id, // Menyimpan packages_id
+                'payment_proof' => $paymentProofPath, // Menyimpan payment_proof
             ]);
 
             DB::commit();
@@ -71,7 +77,7 @@ class BookController extends Controller
     // Menampilkan detail buku
     public function show($id)
     {
-        $book = Book::with('user')->findOrFail($id);
+        $book = Book::with('user', 'package')->findOrFail($id); // Memuat relasi package
         return response()->json([
             'data' => $book,
             'message' => 'success',
@@ -91,6 +97,8 @@ class BookController extends Controller
                 'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'page' => 'required|integer',
                 'pdf' => 'nullable|mimes:pdf|max:10000',
+                'packages_id' => 'required|exists:packages,id', // Validasi packages_id
+                'payment_proof' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi payment_proof
             ]);
 
             $book = Book::findOrFail($id);
@@ -99,6 +107,7 @@ class BookController extends Controller
             $book->author = $request->author;
             $book->isbn = $request->isbn;
             $book->page = $request->page;
+            $book->packages_id = $request->packages_id; // Memperbarui packages_id
 
             if ($request->hasFile('cover_image')) {
                 // Hapus cover image lama jika ada
@@ -116,6 +125,15 @@ class BookController extends Controller
                 }
                 $pdfPath = $request->file('pdf')->store('pdfs', 'public');
                 $book->pdf = $pdfPath;
+            }
+
+            if ($request->hasFile('payment_proof')) {
+                // Hapus bukti pembayaran lama jika ada
+                if ($book->payment_proof) {
+                    Storage::delete('public/' . $book->payment_proof);
+                }
+                $paymentProofPath = $request->file('payment_proof')->store('payment_proofs', 'public');
+                $book->payment_proof = $paymentProofPath;
             }
 
             $book->save();
@@ -144,12 +162,15 @@ class BookController extends Controller
         try {
             $book = Book::findOrFail($id);
 
-            // Hapus cover image dan PDF jika ada
+            // Hapus cover image, PDF, dan bukti pembayaran jika ada
             if ($book->cover_image) {
                 Storage::delete('public/' . $book->cover_image);
             }
             if ($book->pdf) {
                 Storage::delete('public/' . $book->pdf);
+            }
+            if ($book->payment_proof) {
+                Storage::delete('public/' . $book->payment_proof);
             }
 
             $book->delete();

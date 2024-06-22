@@ -32,6 +32,18 @@
           <label for="pdf" class="form-label">PDF</label>
           <input type="file" class="form-control" id="pdf" name="pdf" required>
         </div>
+        <div class="mb-3">
+          <label for="packages_id" class="form-label">Package</label>
+          <select class="form-control" id="packages_id" name="packages_id" required>
+            @foreach($packages as $package)
+              <option value="{{ $package->id }}">{{ $package->name }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="payment_proof" class="form-label">Payment Proof</label>
+          <input type="file" class="form-control" id="payment_proof" name="payment_proof">
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
