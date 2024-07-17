@@ -16,7 +16,8 @@ class BookController extends Controller
     // Menampilkan daftar buku
     public function index()
     {
-        $books = Book::with('user', 'package')->get(); // Memuat relasi package
+        // dd('a');
+        $books = Book::with('user', 'packages')->get(); // Memuat relasi package
         return response()->json([
             'data' => $books,
             'message' => 'success',
