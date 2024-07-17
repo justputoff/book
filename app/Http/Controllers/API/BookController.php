@@ -17,7 +17,7 @@ class BookController extends Controller
     public function index()
     {
         // dd('a');
-        $books = Book::with('user', 'packages')->get(); // Memuat relasi package
+        $books = Book::with('user', 'package')->get(); // Memuat relasi package
         return response()->json([
             'data' => $books,
             'message' => 'success',
