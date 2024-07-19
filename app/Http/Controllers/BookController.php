@@ -13,7 +13,7 @@ class BookController extends Controller
     // Menampilkan daftar buku
     public function index()
     {
-        $books = Book::with('user', 'packages')->get(); // Memuat relasi package
+        $books = Book::with('user', 'package')->get(); // Memuat relasi package
         // dd($books);
         return view('pages.books.index', compact('books'));
     }
