@@ -39,7 +39,7 @@
             <td>{{ $book->page }}</td>
             <td>{{ $book->user->name }}</td>
             <td><a href="{{ Storage::url($book->pdf) }}" target="_blank">Download PDF</a></td>
-            <td>{{ $book->packages->name }}</td>
+            <td>{{ $book->package->name ?? '' }}</td>
             <td>
               @if ($book->payment_proof)
                 <a href="{{ Storage::url($book->payment_proof) }}" target="_blank"> View Image</a>
